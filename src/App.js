@@ -11,21 +11,24 @@ const App = () => {
 
   const [title, setTitle] = useState('')
   const [tasks, setTasks] = useState([])
+  const [init, setInit] = useState(true)
 
   useEffect(() => {
     //Check if localstorage is
     const storedTasks = JSON.parse(window.localStorage.getItem('tasks'))
     // check if storedTasks is not null and is not empty
-    if (storedTasks && storedTasks.length > 0) {
+    if (init) {
       setTasks(storedTasks)
+      setInit(false)
     }
-  }, [])
+  }, [init])
 
   //UseEffect re-renders application whenever dependency objects are changed
   useEffect(() => {
 
     //Save to localstorage whenever tasks is updated
-    if (tasks.length > 0) {
+    // as long as task is not null (can be empty)
+    if (tasks) {
       console.log('save tasks to localstorage')
       window.localStorage.setItem('tasks', JSON.stringify(tasks))
     }
@@ -44,16 +47,25 @@ const App = () => {
     console.log('handle submit', title)
     //TODO: Why didn't it re-render when creating the temp container??
     // console.log(...tasks)
-    setTasks([...tasks, title])
-    setTitle('')
+
+    // prevent the addition of an empty string
+    if (title.length > 0) {
+      // add only if item is not already in list
+      if (tasks.filter(i => i === title).length < 1) {
+        setTasks([...tasks, title])
+        setTitle('')
+      }
+    }
   }
 
   const handleEdit = () => {
     //TODO: Edit todo using the es6 find
   }
 
-  const handleRemove = () => {
+  const handleRemove = (item) => {
     //TODO: Remove todo using es6 filter
+    console.log("Handle remove")
+    setTasks(tasks.filter(i => i !== item))
   }
 
   return (
@@ -80,7 +92,7 @@ const App = () => {
             <span className="py-2 px-8 text-white">{item}</span>
             <div className="ml-auto">
               <button type="button" className={editBtns + blueBtn} onClick={handleEdit}>Edit</button>
-              <button type="button" className={editBtns + redBtn} onClick={handleRemove}>Delete</button>
+              <button type="button" className={editBtns + redBtn} onClick={() => handleRemove(item)}>Delete</button>
             </div>
           </li>
         )) : "Nothing in list"}
