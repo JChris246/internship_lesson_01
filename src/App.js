@@ -52,7 +52,7 @@ const App = () => {
     // prevent the addition of an empty string
     if (title.length > 0) {
       // add only if item is not already in list
-      if (tasks.filter(i => i === title).length < 1) {
+      if (tasks.filter(i => i.value === title).length < 1) {
         setTasks([...tasks, {value: title, edit: false, index: tasks.length + 1}])
         setTitle('')
       }
