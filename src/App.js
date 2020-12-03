@@ -16,9 +16,10 @@ const App = () => {
   useEffect(() => {
     //Check if localstorage is
     const storedTasks = JSON.parse(window.localStorage.getItem('tasks'))
-    // check if storedTasks is not null and is not empty
+
+    // first time loading app ? get list from local storage
     if (init) {
-      setTasks(storedTasks)
+      setTasks(storedTasks ? storedTasks : [])
       setInit(false)
     }
   }, [init])
@@ -52,7 +53,7 @@ const App = () => {
     if (title.length > 0) {
       // add only if item is not already in list
       if (tasks.filter(i => i === title).length < 1) {
-        setTasks([...tasks, title])
+        setTasks([...tasks, {value: title, edit: false, index: tasks.length + 1}])
         setTitle('')
       }
     }
@@ -62,10 +63,12 @@ const App = () => {
     //TODO: Edit todo using the es6 find
   }
 
-  const handleRemove = (item) => {
+  const handleRemove = (e) => {
     //TODO: Remove todo using es6 filter
+    const { name } = e.target
+
     console.log("Handle remove")
-    setTasks(tasks.filter(i => i !== item))
+    setTasks(tasks.filter(i => i.index !== parseInt(name)))
   }
 
   return (
@@ -87,12 +90,21 @@ const App = () => {
       </div>
 
       <ul className="mt-10">
-        {tasks?.length > 0 ? tasks.map((item, index) => (
-          <li key={index} className="flex flex-row">
-            <span className="py-2 px-8 text-white">{item}</span>
+        {tasks?.length > 0 ? tasks.map((item) => (
+          <li key={item.index} className="flex flex-row">
+            <input className="py-2 px-8 text-white bg-blue-400"
+              type="text"
+              value={item.value}
+              name={item.index}
+              readOnly
+            />
             <div className="ml-auto">
               <button type="button" className={editBtns + blueBtn} onClick={handleEdit}>Edit</button>
-              <button type="button" className={editBtns + redBtn} onClick={() => handleRemove(item)}>Delete</button>
+              <button type="button"
+                className={editBtns + redBtn}
+                onClick={handleRemove}
+                name={item.index}
+              >Delete</button>
             </div>
           </li>
         )) : "Nothing in list"}
