@@ -74,10 +74,14 @@ const App = () => {
   const handleSave = () => {
     console.log('handle save', editableField)
 
+    // get item which was edited to get the doc id for firebase
     const replaceIndex = tasks.findIndex((item, index) => editableRowIndex === index)
-    tasks[replaceIndex] = editableField
-    console.log(tasks)
-    setTasks([...tasks])
+
+    // get ref of doc from firebase and edit ... this should auto update tasks in useEffect
+    db.collection("todos").doc(tasks[replaceIndex].id).set({
+      id: tasks[replaceIndex].id,
+      title: editableField,
+    })
     setEditableRow(-1)
 
   }
