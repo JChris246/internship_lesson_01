@@ -84,7 +84,11 @@ const App = () => {
 
   const handleRemove = (todoIndex) => {
     //TODO: Remove todo using es6 filter
-    setTasks([...tasks.filter((item, index) => index !== todoIndex)])
+    // get item to get the doc id for firebase
+    const id = tasks.filter((item, index) => index === todoIndex)[0].id
+
+    // deleting the doc from firebase should auto update tasks
+    db.collection("todos").doc(id).delete();
   }
 
   return (
@@ -119,7 +123,7 @@ const App = () => {
               {index !== editableRowIndex ? (
                 <>
                   <button type="button" onClick={() => toggleEditMode(index)}>Edit</button>
-                  <button type="button" onClick={handleRemove}>Delete</button>
+                  <button type="button" onClick={() => handleRemove(index)}>Delete</button>
                 </>
               ) : (
                   <button type="button" onClick={handleSave}>Save Changes</button>
