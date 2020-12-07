@@ -27,8 +27,6 @@ const Login = () => {
         if (username.value.length > 1 && password.value.length > 1) {
             // call auth to login user
             loginUser(username.value);
-            console.log("ds")
-            {<Redirect to="todo"/>}
         }
     }
 
