@@ -2,13 +2,15 @@
 import { useState, useEffect, useContext } from 'react'
 import '../App.css';
 
+import { AuthContext } from '../context/Auth'
+
 const Todo = () => {
 
     const [title, setTitle] = useState('')
     const [tasks, setTasks] = useState([])
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
-
+    const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         //Check if localstorage is
@@ -80,7 +82,7 @@ const Todo = () => {
         <div className="App">
             <div>
                 Welcome back
-                 {/* TODO: Display logged in user name here */}
+                 {" " + currentUser}
             </div>
             <div>
                 <input
