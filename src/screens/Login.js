@@ -21,7 +21,10 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         //TODO: Handle form submission
-
+        const {username, password} = e.target
+        if (username.value.length > 1 && password.value.length > 1)
+            // call auth to login user
+            loginUser(username.value);
     }
 
     //NOTE:Successful form submission must require both username and password submitted
