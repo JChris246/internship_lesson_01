@@ -23,10 +23,10 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         //TODO: Handle form submission
-        const {username, password} = e.target
-        if (username.value.length > 1 && password.value.length > 1) {
+        const {username, password} = fields
+        if (username.length > 1 && password.length > 1) {
             // call auth to login user
-            loginUser(username.value);
+            loginUser(username);
         }
     }
 
@@ -34,7 +34,7 @@ const Login = () => {
 
     return (
         <div>
-            {isLoggedIn() ? (<Redirect to="todo"/>) : (
+            {false ? (<Redirect to="todo"/>) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                     <label htmlFor="username" style={{ marginTop: 5 }}>
                         Username
