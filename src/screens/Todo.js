@@ -4,6 +4,7 @@ import '../App.css';
 
 import { AuthContext } from '../context/Auth'
 import { Redirect } from "react-router-dom";
+import db from '../config/firebase'
 
 const Todo = () => {
 
@@ -21,9 +22,11 @@ const Todo = () => {
         if (storedTasks?.length > 0) {
             setTasks(storedTasks)
         }
-        const user = window.localStorage.getItem('user')
-        if (user && user.length > 0) 
-            setCurrentUser(user)
+        db.collection("logged_user").onSnapshot(snapshot => {
+            const user = snapshot.docs.map(doc => (doc.data()))[0].username;
+            if (user && user.length > 0)
+                setCurrentUser(user)
+        })
     }, [])
 
     //UseEffect re-renders application whenever dependency objects are changed

@@ -1,4 +1,5 @@
 import { useContext, useState, createContext } from 'react'
+import db from '../config/firebase'
 
 export const AuthContext = createContext()
 
@@ -9,12 +10,16 @@ export const AuthProvider = ({ children }) => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
         setCurrentUser(data);
-        localStorage.setItem("user", data);
+        db.collection("logged_user").doc("docId").update({
+            username: data,
+        })
     }
-    const isLoggedIn = () => localStorage.getItem("user");
+    const isLoggedIn = () => currentUser != null
     const logOut = () => {
         setCurrentUser(null);
-        localStorage.removeItem("user")
+        db.collection("logged_user").doc("docId").update({
+            username: null,
+        })
     }
     return (
         <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn, setCurrentUser, logOut}} >
