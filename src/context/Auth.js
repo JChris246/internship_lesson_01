@@ -12,8 +12,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("user", data);
     }
     const isLoggedIn = () => localStorage.getItem("user");
+    const logOut = () => {
+        setCurrentUser(null);
+        localStorage.removeItem("user")
+    }
     return (
-        <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn, setCurrentUser}} >
+        <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn, setCurrentUser, logOut}} >
             { children}
         </AuthContext.Provider >
     )

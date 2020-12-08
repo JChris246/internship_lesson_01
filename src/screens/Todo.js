@@ -12,7 +12,7 @@ const Todo = () => {
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
 
-    const { isLoggedIn, currentUser, setCurrentUser } = useContext(AuthContext)
+    const { isLoggedIn, currentUser, setCurrentUser, logOut } = useContext(AuthContext)
 
     useEffect(() => {
         //Check if localstorage is
@@ -22,7 +22,7 @@ const Todo = () => {
             setTasks(storedTasks)
         }
         const user = window.localStorage.getItem('user')
-        if (user.length > 0) 
+        if (user && user.length > 0) 
             setCurrentUser(user)
     }, [])
 
@@ -87,6 +87,7 @@ const Todo = () => {
         <div className="App">
             {!isLoggedIn() ? (<Redirect to="login"/>) : (
                 <div>
+                    <button type="button" onClick={logOut}>Logout</button><p></p>
                     <div>
                         Welcome back
                         {" " + currentUser}
