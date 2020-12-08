@@ -6,6 +6,7 @@ export const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null)
+
     const loginUser = (data) => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
@@ -14,7 +15,15 @@ export const AuthProvider = ({ children }) => {
             username: data,
         })
     }
-    const isLoggedIn = () => currentUser != null
+    const isLoggedIn = () => {
+        db.collection("logged_user").onSnapshot(snapshot => {
+            const user = snapshot.docs.map(doc => (doc.data()))[0].username;
+            if (user && user.length > 0)
+                setCurrentUser(user)
+        })
+        return currentUser != null;
+    }
+
     const logOut = () => {
         setCurrentUser(null);
         db.collection("logged_user").doc("docId").update({

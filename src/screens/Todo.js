@@ -4,7 +4,6 @@ import '../App.css';
 
 import { AuthContext } from '../context/Auth'
 import { Redirect } from "react-router-dom";
-import db from '../config/firebase'
 
 const Todo = () => {
 
@@ -13,7 +12,7 @@ const Todo = () => {
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
 
-    const { isLoggedIn, currentUser, setCurrentUser, logOut } = useContext(AuthContext)
+    const { isLoggedIn, currentUser, logOut } = useContext(AuthContext)
 
     useEffect(() => {
         //Check if localstorage is
@@ -22,11 +21,6 @@ const Todo = () => {
         if (storedTasks?.length > 0) {
             setTasks(storedTasks)
         }
-        db.collection("logged_user").onSnapshot(snapshot => {
-            const user = snapshot.docs.map(doc => (doc.data()))[0].username;
-            if (user && user.length > 0)
-                setCurrentUser(user)
-        })
     }, [])
 
     //UseEffect re-renders application whenever dependency objects are changed
