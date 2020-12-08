@@ -2,6 +2,9 @@
 import { useState, useEffect, useContext } from 'react'
 import '../App.css';
 
+import { AuthContext } from '../context/Auth'
+import { Redirect } from "react-router-dom";
+
 const Todo = () => {
 
     const [title, setTitle] = useState('')
@@ -9,6 +12,7 @@ const Todo = () => {
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
 
+    const { isLoggedIn, currentUser, setCurrentUser } = useContext(AuthContext)
 
     useEffect(() => {
         //Check if localstorage is
@@ -17,6 +21,9 @@ const Todo = () => {
         if (storedTasks?.length > 0) {
             setTasks(storedTasks)
         }
+        const user = window.localStorage.getItem('user')
+        if (user.length > 0) 
+            setCurrentUser(user)
     }, [])
 
     //UseEffect re-renders application whenever dependency objects are changed
@@ -78,50 +85,54 @@ const Todo = () => {
 
     return (
         <div className="App">
-            <div>
-                Welcome back
-                 {/* TODO: Display logged in user name here */}
-            </div>
-            <div>
-                <input
-                    type='text'
-                    name="task_title"
-                    value={title}
-                    placeholder="Add task here"
-                    onChange={handleFieldChange}
-                />
-                <button type="button"
-                    onClick={handleSubmit}>
-                    Add task
-          </button>
-            </div>
-
-            <ul style={{ listStyle: 'none' }}>
-                {tasks?.length > 0 ? tasks.map((task, index) => (
-                    <li
-                        style={{ display: 'flex', justifyContent: 'space-between' }}
-                        key={index}
-                    >
+            {!isLoggedIn() ? (<Redirect to="login"/>) : (
+                <div>
+                    <div>
+                        Welcome back
+                        {" " + currentUser}
+                    </div>
+                    <div>
                         <input
                             type='text'
-                            defaultValue={task}
-                            disabled={index !== editableRowIndex}
-                            onChange={handleEditFieldChange}
+                            name="task_title"
+                            value={title}
+                            placeholder="Add task here"
+                            onChange={handleFieldChange}
                         />
-                        <div>
-                            {index !== editableRowIndex ? (
-                                <>
-                                    <button type="button" onClick={() => toggleEditMode(index)}>Edit</button>
-                                    <button type="button" onClick={() => handleRemove(index)}>Delete</button>
-                                </>
-                            ) : (
-                                    <button type="button" onClick={handleSave}>Save Changes</button>
-                                )}
+                        <button type="button"
+                            onClick={handleSubmit}>
+                            Add task
+                </button>
+                    </div>
 
-                        </div>
-                    </li>
-                )) : "Nothing in list"}
-            </ul>
+                    <ul style={{ listStyle: 'none' }}>
+                        {tasks?.length > 0 ? tasks.map((task, index) => (
+                            <li
+                                style={{ display: 'flex', justifyContent: 'space-between' }}
+                                key={index}
+                            >
+                                <input
+                                    type='text'
+                                    defaultValue={task}
+                                    disabled={index !== editableRowIndex}
+                                    onChange={handleEditFieldChange}
+                                />
+                                <div>
+                                    {index !== editableRowIndex ? (
+                                        <>
+                                            <button type="button" onClick={() => toggleEditMode(index)}>Edit</button>
+                                            <button type="button" onClick={() => handleRemove(index)}>Delete</button>
+                                        </>
+                                    ) : (
+                                            <button type="button" onClick={handleSave}>Save Changes</button>
+                                        )}
+
+                                </div>
+                            </li>
+                        )) : "Nothing in list"}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }

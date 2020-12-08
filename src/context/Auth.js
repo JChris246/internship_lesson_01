@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     }
     const isLoggedIn = () => localStorage.getItem("user");
     return (
-        <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn}} >
+        <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn, setCurrentUser}} >
             { children}
         </AuthContext.Provider >
     )
