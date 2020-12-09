@@ -1,5 +1,5 @@
 import { useContext, useState, createContext } from 'react'
-import db from '../config/firebase'
+import { firestore } from '../config/firebase'
 
 export const AuthContext = createContext()
 
@@ -7,31 +7,52 @@ export const AuthProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null)
 
-    const loginUser = (data) => {
+    /* const signUpUser = ({email, password}) => {
+        firestore.auth.createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+            // Signed in 
+            setCurrentUser(user.email);
+            initAuthListener(); // set listener for further changes
+        })
+        .catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            console.log(errorCode + " " + errorMessage);
+        });
+    } */
+
+    const loginUser = ({email, password}) => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
-        setCurrentUser(data);
-        db.collection("logged_user").doc("docId").update({
-            username: data,
-        })
+        firestore.auth.signInWithEmailAndPassword(email, password).then((user) => {
+            setCurrentUser(user.email);
+            initAuthListener(); // set listener for further changes
+        }).catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            console.log(errorCode + " " + errorMessage);
+        });
     }
-    const isLoggedIn = () => {
-        db.collection("logged_user").onSnapshot(snapshot => {
-            const user = snapshot.docs.map(doc => (doc.data()))[0].username;
-            if (user && user.length > 0)
-                setCurrentUser(user)
-        })
-        return currentUser != null;
+
+    const initAuthListener = () => {
+        firestore.auth.onAuthStateChanged((user) => {
+            if (user) {
+              // User is signed in.
+              // user.displayName was null ... resort to email as display name
+              setCurrentUser(user.email);
+            } else {
+              // No user is signed in.
+              setCurrentUser(null);
+            }
+        });
     }
 
     const logOut = () => {
-        setCurrentUser(null);
-        db.collection("logged_user").doc("docId").update({
-            username: null,
-        })
+    
     }
+
     return (
-        <AuthContext.Provider value={{ currentUser, loginUser, isLoggedIn, setCurrentUser, logOut}} >
+        <AuthContext.Provider value={{ currentUser, loginUser, setCurrentUser, logOut, initAuthListener}} >
             { children}
         </AuthContext.Provider >
     )

@@ -1,12 +1,10 @@
 import { useState, useContext } from 'react'
-
 import { AuthContext } from '../context/Auth'
-
 import { Redirect } from "react-router-dom";
 
 const Login = () => {
 
-    const { loginUser, isLoggedIn } = useContext(AuthContext)
+    const { loginUser, currentUser } = useContext(AuthContext)
 
     const [fields, setFields] = useState({
         username: '',
@@ -26,19 +24,22 @@ const Login = () => {
         const {username, password} = fields
         if (username.length > 1 && password.length > 1) {
             // call auth to login user
-            loginUser(username);
+            loginUser({
+                email: username, 
+                password: password
+            });
         }
     }
 
     //NOTE:Successful form submission must require both username and password submitted
-
+      
     return (
         <div>
-            {isLoggedIn() ? (<Redirect to="todo"/>) : (
+            {currentUser ? (<Redirect to="todo"/>) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                     <label htmlFor="username" style={{ marginTop: 5 }}>
-                        Username
-                        <input type="text" name="username" value={fields.username} onChange={handleFieldChange} />
+                        Email
+                        <input type="email" name="username" value={fields.username} onChange={handleFieldChange} />
                     </label>
                     <label htmlFor="password" style={{ marginTop: 5 }}>
                         Password

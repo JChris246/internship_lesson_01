@@ -12,7 +12,7 @@ const Todo = () => {
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
 
-    const { isLoggedIn, currentUser, logOut } = useContext(AuthContext)
+    const { currentUser, logOut, initAuthListener } = useContext(AuthContext)
 
     useEffect(() => {
         //Check if localstorage is
@@ -21,6 +21,8 @@ const Todo = () => {
         if (storedTasks?.length > 0) {
             setTasks(storedTasks)
         }
+        // call auth listener to set currentUser if page reloads
+        initAuthListener(); 
     }, [])
 
     //UseEffect re-renders application whenever dependency objects are changed
@@ -82,7 +84,7 @@ const Todo = () => {
 
     return (
         <div className="App">
-            {!isLoggedIn() ? (<Redirect to="login"/>) : (
+            {!currentUser ? (<Redirect to="login"/>) : (
                 <div>
                     <button type="button" onClick={logOut}>Logout</button><p></p>
                     <div>
