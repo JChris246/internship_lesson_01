@@ -20,15 +20,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        //TODO: Handle form submission
-        const {username, password} = fields
-        if (username.length > 1 && password.length > 1) {
-            // call auth to login user
-            loginUser({
-                email: username, 
-                password: password
-            });
-        }
+        loginUser();
     }
 
     //NOTE:Successful form submission must require both username and password submitted
@@ -37,16 +29,8 @@ const Login = () => {
         <div>
             {currentUser ? (<Redirect to="todo"/>) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
-                    <label htmlFor="username" style={{ marginTop: 5 }}>
-                        Email
-                        <input type="email" name="username" value={fields.username} onChange={handleFieldChange} />
-                    </label>
-                    <label htmlFor="password" style={{ marginTop: 5 }}>
-                        Password
-                        <input type="password" name="password" value={fields.password} onChange={handleFieldChange} />
-                    </label>
                     <div style={{ marginTop: 5 }}>
-                        <button type='submit'>Login Now</button>
+                        <button type='submit'>Login With Github</button>
                     </div>
                 </form>
             )}

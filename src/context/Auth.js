@@ -21,16 +21,24 @@ export const AuthProvider = ({ children }) => {
         });
     } */
 
-    const loginUser = ({email, password}) => {
+    const loginUser = () => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
-        firestore.auth.signInWithEmailAndPassword(email, password).then((user) => {
+        firestore.auth.signInWithPopup(firestore.githubProvider).then((result) => {
+            let token = result.credential.accessToken;
+            // The signed-in user info.
+            let user = result.user;          
             setCurrentUser(user.email);
             initAuthListener(); // set listener for further changes
         }).catch((error) => {
+            // Handle Errors here.
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log(errorCode + " " + errorMessage);
+            // The email of the user's account used.
+            let email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            let credential = error.credential;
+            console.log(`error code: ${errorCode}\nerror message: ${errorMessage}\nemail: ${email}\ncredential: ${credential}`)
         });
     }
 
@@ -48,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logOut = () => {
-    
+
     }
 
     return (
