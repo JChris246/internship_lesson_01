@@ -24,31 +24,17 @@ export const AuthProvider = ({ children }) => {
     const loginUser = ({email, password}) => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
-        firestore.auth.signInWithEmailAndPassword(email, password).then((user) => {
-            setCurrentUser(user.email);
-            initAuthListener(); // set listener for further changes
-        }).catch((error) => {
-            let errorCode = error.code;
-            let errorMessage = error.message;
-            console.log(errorCode + " " + errorMessage);
-        });
-    }
 
-    const initAuthListener = () => {
-        firestore.auth.onAuthStateChanged((user) => {
-            if (user) {
-              // User is signed in.
-              // user.displayName was null ... resort to email as display name
-              setCurrentUser(user.email);
-            } else {
-              // No user is signed in.
-              setCurrentUser(null);
-            }
-        });
     }
 
     const logOut = () => {
-    
+        firestore.auth.signOut().then(() => {
+            // Sign-out successful.
+            setCurrentUser(null); // this effective signs out user (regardless sign in type)
+        }).catch((error) => {
+            // An error happened.
+            console.log(error);
+        });
     }
 
     return (
