@@ -22,7 +22,7 @@ const Todo = () => {
             setTasks(storedTasks)
         }
         // call auth listener to set currentUser if page reloads
-        initAuthListener(); 
+        // initAuthListener(); 
     }, [])
 
     //UseEffect re-renders application whenever dependency objects are changed

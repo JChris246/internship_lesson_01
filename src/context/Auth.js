@@ -1,5 +1,5 @@
 import { useContext, useState, createContext } from 'react'
-import { firestore } from '../config/firebase'
+import { firebaseObj } from '../config/firebase'
 
 export const AuthContext = createContext()
 
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null)
 
     /* const signUpUser = ({email, password}) => {
-        firestore.auth.createUserWithEmailAndPassword(email, password)
+        firebaseObj.auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             // Signed in
             setCurrentUser(user.email);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logOut = () => {
-        firestore.auth.signOut().then(() => {
+        firebaseObj.auth.signOut().then(() => {
             // Sign-out successful.
             setCurrentUser(null); // this effective signs out user (regardless sign in type)
         }).catch((error) => {
