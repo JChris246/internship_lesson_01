@@ -29,7 +29,7 @@ const provider = new firebase.auth.GithubAuthProvider().setCustomParameters({
 });
   
 
-export const firebase = {
+export const firebaseObj = {
     db: db, 
     auth: auth,
     githubProvider: provider
