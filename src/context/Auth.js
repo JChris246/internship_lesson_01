@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     /* const signUpUser = ({email, password}) => {
         firestore.auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
-            // Signed in 
+            // Signed in
             setCurrentUser(user.email);
             initAuthListener(); // set listener for further changes
         })
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ currentUser, loginUser, setCurrentUser, logOut, initAuthListener}} >
+        <AuthContext.Provider value={{ currentUser, loginUser, setCurrentUser, logOut}} >
             { children}
         </AuthContext.Provider >
     )
