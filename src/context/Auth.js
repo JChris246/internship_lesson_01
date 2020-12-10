@@ -1,5 +1,5 @@
 import { useContext, useState, createContext } from 'react'
-import { firestore } from '../config/firebase'
+import { firebase } from '../config/firebase'
 
 export const AuthContext = createContext()
 
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null)
 
     /* const signUpUser = ({email, password}) => {
-        firestore.auth.createUserWithEmailAndPassword(email, password)
+        firebase.auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             // Signed in 
             setCurrentUser(user.email);
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     const loginUser = ({email, password}) => {
         //TODO: Handle login functionality here
         //TODO: Store login info in localstorage (don't store password!)
-        firestore.auth.signInWithEmailAndPassword(email, password).then((user) => {
+        firebase.auth.signInWithEmailAndPassword(email, password).then((user) => {
             setCurrentUser(user.email);
             initAuthListener(); // set listener for further changes
         }).catch((error) => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const initAuthListener = () => {
-        firestore.auth.onAuthStateChanged((user) => {
+        firebase.auth.onAuthStateChanged((user) => {
             if (user) {
               // User is signed in.
               // user.displayName was null ... resort to email as display name

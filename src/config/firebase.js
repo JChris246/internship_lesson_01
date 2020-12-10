@@ -6,12 +6,13 @@ import "firebase/firestore";
 import "firebase/auth";
 
 var firebaseConfig = {
-    apiKey: "AIzaSyC60kxswNnWbqMzdJosPRpPeeRPbS4g9ac",
-    authDomain: "internship01-5cbbf.firebaseapp.com",
-    projectId: "internship01-5cbbf",
-    storageBucket: "internship01-5cbbf.appspot.com",
-    messagingSenderId: "239850786193",
-    appId: "1:239850786193:web:86a873d8dcb8f98f0fde30"
+    apiKey: process.env.REACT_APP_APIKEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    projectId: process.env.REACT_APP_PROJECTID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_APPID,
+    measurementId: process.env.REACT_APP_MEASUREMENTID
 };
 
 // Initialize Firebase
@@ -28,7 +29,7 @@ const provider = new firebase.auth.GithubAuthProvider().setCustomParameters({
 });
   
 
-export const firestore = {
+export const firebase = {
     db: db, 
     auth: auth,
     githubProvider: provider
