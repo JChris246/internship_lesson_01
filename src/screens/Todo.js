@@ -48,8 +48,10 @@ const Todo = () => {
         // console.log('handle submit', title)
         //TODO: Why didn't it re-render when creating the temp container??
         // console.log(...tasks)
-        setTasks([...tasks, title])
-        setTitle('')
+        if (title.length > 2) {
+            setTasks([...tasks, title])
+            setTitle('')
+        }
     }
 
     const toggleEditMode = (todoIndex) => {

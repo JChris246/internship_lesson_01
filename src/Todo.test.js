@@ -39,7 +39,14 @@ describe("Todo", () => {
 
     it("fails when new items is less than 3 characters", async () => {
         //TODO
+        const { getByTestId, getByText } = render(<Todo />);
+        const todos = getByTestId("todos");
+        const input = getByTestId("input");
 
+        await userEvent.type(input, "PR")
+        await userEvent.click(getByText(/add task/i));
+
+        expect(todos.children.length).toBe(2);
     })
 
     it("adds a new to-do", async () => {
