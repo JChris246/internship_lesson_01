@@ -1,11 +1,11 @@
 
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import '../App.css';
 
 const Todo = () => {
 
     const [title, setTitle] = useState('')
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState(["read a book", "write some code"])
     const [editableRowIndex, setEditableRow] = useState(-1)
     const [editableField, setEditableField] = useState('')
 
@@ -13,7 +13,7 @@ const Todo = () => {
     useEffect(() => {
         //Check if localstorage is
         const storedTasks = JSON.parse(window.localStorage.getItem('tasks'))
-        console.log(storedTasks)
+        // console.log(storedTasks)
         if (storedTasks?.length > 0) {
             setTasks(storedTasks)
         }
@@ -24,7 +24,7 @@ const Todo = () => {
 
         //Save to localstorage whenever tasks is updated
         if (tasks.length > 0) {
-            console.log('save tasks to localstorage')
+            // console.log('save tasks to localstorage')
             window.localStorage.setItem('tasks', JSON.stringify(tasks))
         }
 
@@ -45,7 +45,7 @@ const Todo = () => {
 
     //Handles saving to the tasks array
     const handleSubmit = () => {
-        console.log('handle submit', title)
+        // console.log('handle submit', title)
         //TODO: Why didn't it re-render when creating the temp container??
         // console.log(...tasks)
         setTasks([...tasks, title])
@@ -85,6 +85,7 @@ const Todo = () => {
             <div>
                 <input
                     type='text'
+                    data-testid="input"
                     name="task_title"
                     value={title}
                     placeholder="Add task here"
@@ -93,10 +94,10 @@ const Todo = () => {
                 <button type="button"
                     onClick={handleSubmit}>
                     Add task
-          </button>
+                </button>
             </div>
 
-            <ul style={{ listStyle: 'none' }}>
+            <ul data-testid="todos" style={{ listStyle: 'none' }}>
                 {tasks?.length > 0 ? tasks.map((task, index) => (
                     <li
                         style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -111,8 +112,10 @@ const Todo = () => {
                         <div>
                             {index !== editableRowIndex ? (
                                 <>
-                                    <button type="button" onClick={() => toggleEditMode(index)}>Edit</button>
-                                    <button type="button" onClick={() => handleRemove(index)}>Delete</button>
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleEditMode(index)}>Edit</button>
+                                    <button type="button" data-testid="delete-button" onClick={() => handleRemove(index)}>Delete</button>
                                 </>
                             ) : (
                                     <button type="button" onClick={handleSave}>Save Changes</button>
