@@ -55,6 +55,20 @@ describe("Todo", () => {
 
     it("edits a to-do", async () => {
         //TODO
+        const { getByTestId, getAllByTestId } = render(<Todo />);
+        const todos = getByTestId("todos");
+        const todoValue  = getAllByTestId("todo-values")[0];
+        const editButton = getAllByTestId("edit-button")[0];
+
+        await userEvent.click(editButton);
+        await userEvent.clear(todoValue);
+        await userEvent.type(todoValue, "Edited todo")
+        
+        // screen.debug()
+        // check to make sure todo was indeed edited
+        expect(todos.firstChild.children[0].value).toBe("Edited todo");
+        // ensure the same number of todos still exist
+        expect(todos.children.length).toBe(3);
     })
 
     it("deletes a to-do", async () => {

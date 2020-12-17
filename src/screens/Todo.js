@@ -108,11 +108,13 @@ const Todo = () => {
                             defaultValue={task}
                             disabled={index !== editableRowIndex}
                             onChange={handleEditFieldChange}
+                            data-testid="todo-values"
                         />
                         <div>
                             {index !== editableRowIndex ? (
                                 <>
                                     <button
+                                        data-testid="edit-button"
                                         type="button"
                                         onClick={() => toggleEditMode(index)}>Edit</button>
                                     <button type="button" data-testid="delete-button" onClick={() => handleRemove(index)}>Delete</button>
