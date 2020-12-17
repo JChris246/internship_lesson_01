@@ -27,9 +27,14 @@ describe("Todo", () => {
 
     it("fails when adding an empty to-do", async () => {
         //TODO
-        // A new item must be more than 3 characters long
-        // A new item cannot be an empty string
-        // A new item should be unique
+        const { getByTestId, getByText } = render(<Todo />);
+        const todos = getByTestId("todos");
+        const input = getByTestId("input");
+
+        await userEvent.type(input, "")
+        await userEvent.click(getByText(/add task/i));
+
+        expect(todos.children.length).toBe(2);
     })
 
     it("fails when new item is not unique", async () => {
