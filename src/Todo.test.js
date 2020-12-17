@@ -34,7 +34,14 @@ describe("Todo", () => {
 
     it("fails when new item is not unique", async () => {
         //TODO
+        const { getByTestId, getByText } = render(<Todo />);
+        const todos = getByTestId("todos");
+        const input = getByTestId("input");
 
+        await userEvent.type(input, "read a book")
+        await userEvent.click(getByText(/add task/i));
+
+        expect(todos.children.length).toBe(2);
     })
 
     it("fails when new items is less than 3 characters", async () => {

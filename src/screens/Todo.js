@@ -48,9 +48,12 @@ const Todo = () => {
         // console.log('handle submit', title)
         //TODO: Why didn't it re-render when creating the temp container??
         // console.log(...tasks)
-        if (title.length > 2) {
-            setTasks([...tasks, title])
-            setTitle('')
+        if (title.length > 2) { // add only if task is of length at least 3
+            // only add if task is unique
+            if (tasks.filter(i => i === title).length < 1) {
+                setTasks([...tasks, title])
+                setTitle('')
+            }
         }
     }
 
